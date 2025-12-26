@@ -6,14 +6,14 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 11:48:34 by alvaro            #+#    #+#             */
-/*   Updated: 2025/12/23 20:10:39 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/26 19:31:33 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
 
-# include <MLX42/MLX42.h>
+# include "../minilibx-linux/mlx.h"
 # include "../libft/libft.h"
 # include <errno.h>
 # include <fcntl.h>
@@ -23,6 +23,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+#include <string.h>
 
 # define PI 3.141592653589793
 # define WIDTH 800
@@ -92,6 +93,7 @@ typedef struct s_camera
 
 typedef struct s_ambient
 {
+	float   ratio;
 	bool		status;
 	double		brightness;
 	t_color		color;
@@ -119,9 +121,13 @@ typedef struct s_intr
 
 typedef struct s_gl
 {
-	mlx_t		*window;
-	mlx_image_t	*image;
-}				t_gl;
+    void    *mlx_ptr;
+    void    *win_ptr;
+    void    *img_ptr;
+    int     *img_data;
+    int     width;
+    int     height;
+}               t_gl;
 
 typedef struct s_scene
 {
@@ -174,6 +180,9 @@ bool			assign_values(t_parse *parse);
 
 bool			read_file(t_scene *scene, int fd);
 t_parse			parse_object_type(char *token);
+
+bool	check_format(t_scene *scene, char **tokens,
+			t_type type, bool *error);
 
 /* ===================== */
 /* ===== MATH VEC ====== */
@@ -233,19 +242,31 @@ void		init_shadow_ray(t_light light, t_ray *ray, t_intr intr);
 /* intersect */
 t_intr		get_intersection(t_scene *scene, t_ray ray);
 
-/* normals */
-t_vec		get_normal(t_intr intr, t_ray ray);
-
 /* lighting */
 t_color		get_lighting(t_scene *scene, t_intr intr);
 
 /* pixel */
-void		put_pixel(t_scene *scene, int x, int y, t_color c);
-uint32_t	color_to_int(t_color c);
+void put_pixel(t_scene *scene, int x, int y, t_color c);
+int			color_to_int(t_color c);
 
 /* raytrace */
 void		raytrace_scene(t_scene *scene);
 
+void	free_arg(char **arg);
+bool		check_zero_vector(t_vec v, bool *error);
 
-					
+double	ft_atolf(char *str);
+int		ft_arr_len(char **arr);
+char	**read_next_line_tokens(int fd);
+
+// parse
+bool	check_format(t_scene *s, char **toks, t_type type, bool *error);
+bool	is_rt(char *file);
+
+// raytracing
+double	compute_sphere_intersection(t_ray ray, t_obj obj);
+double	compute_plane_intersection(t_ray ray, t_obj obj);
+double	compute_cylinder_intersection(t_ray ray, t_obj obj);
+
+
 #endif

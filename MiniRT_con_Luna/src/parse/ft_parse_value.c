@@ -6,11 +6,11 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/19 20:10:56 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/23 20:16:14 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/26 19:03:11 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "../includes/miniRT.h"
 
 // Convierte string a float
 float	parse_float(char *str, bool *error, bool free_str)
@@ -94,8 +94,8 @@ t_vec	parse_vector(char *str, bool *error, bool free_str)
 	vector.x = parse_float(components[0], error, false);
 	vector.y = parse_float(components[1], error, false);
 	vector.z = parse_float(components[2], error, false);
-	if (check_zero_vector(vector, error))
-		vector = (t_vec){0, 0, 0};
+	if (vector.x == 0 && vector.y == 0 && vector.z == 0)
+        vector = vector_zero();
 	free_arg(components);
 	if (free_str)
 		free(str);

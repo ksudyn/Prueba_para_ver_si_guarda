@@ -6,11 +6,11 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/23 14:33:34 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/23 19:57:29 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/26 18:39:47 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/miniRT.h"
+#include "miniRT.h"
 
 static bool	is_shadowed(t_scene *scene, t_ray ray, double max_dist)
 {

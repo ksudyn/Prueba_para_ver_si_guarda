@@ -6,11 +6,11 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/19 20:11:50 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/23 20:16:24 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/26 19:31:02 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "../includes/miniRT.h"
 
 // Asigna valores de ambiente
 bool	assign_values_ambient(t_parse *parse)

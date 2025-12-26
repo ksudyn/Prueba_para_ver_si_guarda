@@ -6,11 +6,11 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/23 14:32:26 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/23 19:57:01 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/26 18:39:36 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/miniRT.h"
+#include "miniRT.h"
 
 t_ray	get_ray(t_camera cam, int x, int y)
 {

@@ -6,11 +6,11 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/19 20:11:58 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/23 20:16:21 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/26 19:31:08 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "../includes/miniRT.h"
 
 bool	is_rt(char *file)
 {
@@ -29,35 +29,36 @@ bool	is_rt(char *file)
 }
 
 // Determina el tipo de objeto
+
+static t_type	get_type_from_token(char *token)
+{
+	if (!token || !token[0])
+		return (ER);
+	if (token[1] == '\0')
+	{
+		if (token[0] == 'A')
+			return (AM);
+		if (token[0] == 'C')
+			return (CM);
+		if (token[0] == 'L')
+			return (LG);
+		return (ER);
+	}
+	if (ft_strcmp(token, "sp") == 0)
+		return (SP);
+	if (ft_strcmp(token, "pl") == 0)
+		return (PL);
+	if (ft_strcmp(token, "cy") == 0)
+		return (CY);
+	return (ER);
+}
+
 t_parse	parse_object_type(char *token)
 {
 	t_parse	parse_data;
 
 	ft_bzero(&parse_data, sizeof(t_parse));
-	if (!token || !token[0])
-	{
-		parse_data.type = ER;
-		return (parse_data);
-	}
-	if (token[1] == '\0')
-	{
-		if (token[0] == 'A')
-			parse_data.type = AM;
-		else if (token[0] == 'C')
-			parse_data.type = CM;
-		else if (token[0] == 'L')
-			parse_data.type = LG;
-		else
-			parse_data.type = ER;
-	}
-	else if (ft_strcmp(token, "sp") == 0)
-		parse_data.type = SP;
-	else if (ft_strcmp(token, "pl") == 0)
-		parse_data.type = PL;
-	else if (ft_strcmp(token, "cy") == 0)
-		parse_data.type = CY;
-	else
-		parse_data.type = ER;
+	parse_data.type = get_type_from_token(token);
 	return (parse_data);
 }
 
@@ -88,15 +89,6 @@ void	create_scene_object(t_scene *scene, t_parse parse_data)
 		scene->obj[scene->obj_num++] = create_cylinder(parse_data.p,
 				parse_data.v, cylinder_data, parse_data.c);
 	}
-}
-
-t_parse	parse_object_type(char *token)
-{
-	t_parse	parse_data;
-
-	ft_bzero(&parse_data, sizeof(t_parse));
-	parse_data.type = get_type_from_token(token);
-	return (parse_data);
 }
 
 // Lee el archivo y parsea la escena

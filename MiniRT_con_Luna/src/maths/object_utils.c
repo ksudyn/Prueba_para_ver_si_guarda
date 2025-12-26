@@ -6,11 +6,11 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 15:49:23 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/23 20:14:56 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/26 15:36:18 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "../includes/miniRT.h"
 
 t_vec	sub_points(t_point a, t_point b)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_toupper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asaiz-lo <asaiz-lo@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: ksudyn <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/06 17:40:49 by alvaro            #+#    #+#             */
-/*   Updated: 2024/03/20 18:16:10 by asaiz-lo         ###   ########.fr       */
+/*   Created: 2024/10/09 19:30:31 by ksudyn            #+#    #+#             */
+/*   Updated: 2024/10/10 14:39:47 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_toupper(int c)
 {
-	if ((c >= 97 && c <= 122) && ft_isalpha(c))
-		return (c - 32);
+	while (c >= 'a' && c <= 'z')
+		c -= 32;
 	return (c);
 }

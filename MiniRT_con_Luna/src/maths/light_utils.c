@@ -6,11 +6,11 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 15:49:07 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/23 20:15:00 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/26 15:36:14 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "../includes/miniRT.h"
 
 static t_vec	get_plane_normal(t_intr intr, t_ray ray)
 {

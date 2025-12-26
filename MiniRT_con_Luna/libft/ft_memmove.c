@@ -3,40 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asaiz-lo <asaiz-lo@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: ksudyn <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/08 19:11:01 by alvaro            #+#    #+#             */
-/*   Updated: 2024/03/20 18:30:54 by asaiz-lo         ###   ########.fr       */
+/*   Created: 2024/10/09 19:04:28 by ksudyn            #+#    #+#             */
+/*   Updated: 2024/10/10 14:54:48 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memmove(void *dst, const void *src, size_t len)
+void	*ft_memmove(void *dest, const void *src, size_t len)
 {
-	unsigned int	i;
-	unsigned char	*dest;
-	unsigned char	*srce;
+	unsigned char	*d;
+	unsigned char	*s;
 
-	dest = dst;
-	srce = (unsigned char *)src;
-	if (srce > dest)
+	d = (unsigned char *)dest;
+	s = (unsigned char *)src;
+	if (dest == NULL && src == NULL)
+		return (NULL);
+	if ((d > s) && (s + len > d))
 	{
-		i = 0;
-		while (i < len)
-		{
-			dest[i] = srce[i];
-			i++;
-		}
+		while (len--)
+			d[len] = s[len];
 	}
-	else if (srce < dest)
-	{
-		i = len;
-		while (i > 0)
-		{
-			i--;
-			dest[i] = srce[i];
-		}
-	}
+	else
+		ft_memcpy(d, s, len);
 	return (dest);
 }

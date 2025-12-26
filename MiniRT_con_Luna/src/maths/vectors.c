@@ -6,11 +6,11 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 18:06:58 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/23 20:14:47 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/26 15:36:27 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "../includes/miniRT.h"
 
 t_vec	vectorial_p(t_vec a, t_vec b)
 {

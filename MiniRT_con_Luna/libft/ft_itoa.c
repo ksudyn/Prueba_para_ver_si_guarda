@@ -3,99 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asaiz-lo <asaiz-lo@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: ksudyn <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/10 20:48:32 by alvaro            #+#    #+#             */
-/*   Updated: 2024/03/20 18:10:31 by asaiz-lo         ###   ########.fr       */
+/*   Created: 2024/10/10 15:45:36 by ksudyn            #+#    #+#             */
+/*   Updated: 2024/10/10 15:52:12 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-//#include <stdio.h>
-//#include <stdlib.h>
-//
-// void	*ft_calloc(size_t count, size_t size)
-//{
-//	char	*ptr;
-//	size_t	i;
-//
-//	ptr = malloc(count * size);
-//	if (ptr == NULL)
-//	{
-//		free(ptr);
-//		return (NULL);
-//	}
-//	if (ptr != NULL)
-//	{
-//		i = 0;
-//		while (i < count * size)
-//		{
-//			ptr[i] = 0;
-//			i++;
-//		}
-//	}
-//	return (ptr);
-//}
-
-char	*mem_alloc(long nbr, int len)
+static int	counter_nbr(int n)
 {
-	if (nbr == 0)
-		return (ft_calloc(2, sizeof(char)));
-	return (ft_calloc(len, sizeof(char)));
-}
+	int	i;
 
-int	get_len(long n)
-{
-	int	len;
-
-	len = 0;
+	i = 0;
+	if (n == 0)
+		i++;
 	if (n < 0)
 	{
-		len++;
 		n *= -1;
+		i++;
 	}
 	while (n > 0)
 	{
 		n /= 10;
-		len++;
+		i++;
 	}
-	return (len);
+	return (i);
 }
 
 char	*ft_itoa(int n)
 {
-	char	*result;
-	int		len;
-	long	nbr;
+	int				num;
+	int				size;
+	char			*res;
 
-	nbr = (long)n;
-	len = get_len(nbr);
-	result = mem_alloc(nbr, 1 + len);
-	if (result == NULL)
-		return (free(result), NULL);
-	result[len--] = '\0';
-	if (nbr == 0)
-		result[0] = '0';
-	else if (nbr < 0)
+	num = n;
+	size = counter_nbr(num);
+	if (n == -2147483648)
+		return (ft_strdup("-2147483648"));
+	if (n < 0)
+		num *= -1;
+	res = ft_calloc(size + 1, sizeof(char));
+	if (!res)
+		return (NULL);
+	res[size] = '\0';
+	while (size > 0)
 	{
-		result[0] = '-';
-		nbr *= -1;
+		res[size - 1] = (num % 10) + '0';
+		num /= 10;
+		size--;
 	}
-	while (nbr > 0 && len >= 0)
-	{
-		result[len--] = (char)('0' + nbr % 10);
-		nbr /= 10;
-	}
-	return (result);
+	if (n < 0)
+		res[size] = '-';
+	return (res);
 }
-
-// int main(int ac, char *av[])
-//{
-//    char *s = ft_itoa(9);
-//    //int s2 = itoa(atoi(av[1]));
-//    //printf("Mio = %s\nExpected = %s",s, av[1]);
-//    printf("%s", s);
-//
-//    return (0);
-//}

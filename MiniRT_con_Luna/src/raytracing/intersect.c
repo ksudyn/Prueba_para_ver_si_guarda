@@ -6,11 +6,11 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/23 14:32:57 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/23 19:57:32 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/26 18:39:52 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/miniRT.h"
+#include "miniRT.h"
 
 static void	register_closest(double dist, double *min, t_obj *obj, t_obj **hit)
 {

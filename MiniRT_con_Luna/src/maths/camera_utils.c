@@ -6,11 +6,11 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 15:48:49 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/23 20:15:06 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/26 15:36:08 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "../includes/miniRT.h"
 
 static t_vec	get_camera_right(t_vec forward)
 {

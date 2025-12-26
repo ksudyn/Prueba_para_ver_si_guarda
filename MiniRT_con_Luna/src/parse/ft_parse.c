@@ -6,11 +6,11 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/19 20:07:16 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/23 20:16:18 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/26 15:35:40 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "../includes/miniRT.h"
 
 // Función principal de parseo
 bool	ft_parse(char *filename, t_scene *scene)

@@ -6,11 +6,11 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/23 14:34:05 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/23 19:56:51 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/26 18:39:25 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/miniRT.h"
+#include "miniRT.h"
 
 void	raytrace_scene(t_scene *scene)
 {

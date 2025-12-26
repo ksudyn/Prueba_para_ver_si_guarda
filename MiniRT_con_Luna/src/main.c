@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 20:06:41 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/23 20:07:20 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/26 20:52:56 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 int main(int argc, char **argv)
 {
     t_scene scene;
+    int bits_per_pixel;
+    int size_line;
+    int endian;
 
     if (argc != 2)
     {
@@ -32,28 +35,45 @@ int main(int argc, char **argv)
         return (1);
     }
 
-    // Inicializamos MLX42
-    scene.gl.window = mlx_init(WIDTH, HEIGHT, "miniRT", false);
-    if (!scene.gl.window)
+    // Inicializamos MinilibX
+    scene.gl.mlx_ptr = mlx_init();
+    if (!scene.gl.mlx_ptr)
     {
-        printf("Failed to initialize MLX window.\n");
+        printf("Failed to initialize MLX.\n");
         return (1);
     }
-    scene.gl.image = mlx_new_image(scene.gl.window, WIDTH, HEIGHT);
-    if (!scene.gl.image)
+
+    scene.gl.win_ptr = mlx_new_window(scene.gl.mlx_ptr, WIDTH, HEIGHT, "miniRT");
+    if (!scene.gl.win_ptr)
+    {
+        printf("Failed to create MLX window.\n");
+        return (1);
+    }
+
+    scene.gl.img_ptr = mlx_new_image(scene.gl.mlx_ptr, WIDTH, HEIGHT);
+    if (!scene.gl.img_ptr)
     {
         printf("Failed to create MLX image.\n");
         return (1);
     }
 
-    // Aquí se llamaría a r(scene) para llenar la imagen
+    // Obtenemos puntero a los píxeles
+    scene.gl.img_data = (int *)mlx_get_data_addr(scene.gl.img_ptr,
+                          &bits_per_pixel, &size_line, &endian);
+    scene.gl.width = WIDTH;
+    scene.gl.height = HEIGHT;
+
+    // Raytracing: dibuja la escena en scene.gl.img_data
     raytrace_scene(&scene);
 
-    // Mostramos imagen
-    mlx_image_to_window(scene.gl.window, scene.gl.image, 0, 0);
+    // Mostramos imagen en la ventana
+    mlx_put_image_to_window(scene.gl.mlx_ptr, scene.gl.win_ptr,
+                            scene.gl.img_ptr, 0, 0);
 
     // Loop principal de MLX
-    mlx_loop(scene.gl.window);
+    mlx_loop(scene.gl.mlx_ptr);
 
     return (0);
 }
+
+//valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./miniRT test.rt/nostalgic.rt

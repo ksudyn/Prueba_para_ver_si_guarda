@@ -3,36 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dgomez-l <dgomez-l@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: ksudyn <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/12 11:28:06 by alvaro            #+#    #+#             */
-/*   Updated: 2025/09/10 11:40:02 by dgomez-l         ###   ########.fr       */
+/*   Created: 2024/10/09 19:40:01 by ksudyn            #+#    #+#             */
+/*   Updated: 2024/10/11 14:54:31 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strrchr(char *s, int c)
+char	*ft_strrchr(const char *s, int c)
 {
-	int		i;
-	char	*aux;
+	int				i;
+	unsigned char	character;
 
-	aux = NULL;
-	i = 0;
-	while (s[i])
+	i = ft_strlen (s) -1;
+	character = (unsigned char)c;
+	if (character == '\0')
+		return ((char *)&s[ft_strlen (s)]);
+	while (i >= 0)
 	{
-		if (s[i] == (unsigned char)c)
-			aux = (char *)&s[i];
-		i++;
+		if (s[i] == character)
+			return ((char *)(i + s));
+		i--;
 	}
-	if ((unsigned char)c == 0)
-		return ((char *)&s[i]);
-	return (aux);
+	return (NULL);
 }
-
-/*
-int	main(int ac, char *av[])
-{
-	printf("%s\n", ft_strrchr(av[1], *av[2]));
-	return 0;
-}*/

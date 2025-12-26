@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asaiz-lo <asaiz-lo@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: ksudyn <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/12 16:00:11 by alvaro            #+#    #+#             */
-/*   Updated: 2024/03/20 18:47:26 by asaiz-lo         ###   ########.fr       */
+/*   Created: 2024/10/10 15:09:50 by ksudyn            #+#    #+#             */
+/*   Updated: 2024/10/10 15:12:45 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,23 @@
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	size_t	i;
-	char	*result;
+	size_t	maxlen;
+	char	*dst;
 
 	i = 0;
-	if (start > ft_strlen(s))
+	maxlen = ft_strlen(s);
+	if (start >= maxlen)
 		return (ft_strdup(""));
-	if (ft_strlen(s) - start < len)
-		len = ft_strlen(s) - start;
-	result = (char *)malloc(len + 1);
-	if (!result)
+	if (len > maxlen - start)
+		len = maxlen - start;
+	dst = ft_calloc((len + 1), sizeof(char));
+	if (!dst)
 		return (NULL);
-	while (len > i)
+	while (len > i && start < maxlen)
 	{
-		result[i] = s[start + i];
+		dst[i] = s[start + i];
 		i++;
 	}
-	result[i] = '\0';
-	return (result);
+	dst[i] = '\0';
+	return (dst);
 }

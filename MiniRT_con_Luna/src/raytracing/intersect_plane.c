@@ -1,31 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pixel.c                                            :+:      :+:    :+:   */
+/*   intersect_plane.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/23 19:31:43 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/26 18:42:22 by ksudyn           ###   ########.fr       */
+/*   Created: 2025/12/26 16:54:19 by ksudyn            #+#    #+#             */
+/*   Updated: 2025/12/26 18:40:02 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-int color_to_int(t_color c)
+double	compute_plane_intersection(t_ray ray, t_obj obj)
 {
-    return ((int)(c.r * 255) << 16 | (int)(c.g * 255) << 8 | (int)(c.b * 255));
+	double	denom;
+	double	t;
+	t_vec	p0l0;
+
+	denom = scalar_p(obj.normal, ray.direction);
+	if (fabs(denom) < EPSILON)
+		return (NOINTERSECTION);
+	p0l0 = sub_points(obj.position, ray.origin);
+	t = scalar_p(p0l0, obj.normal) / denom;
+	if (t > EPSILON)
+		return (t);
+	return (NOINTERSECTION);
 }
-
-void put_pixel(t_scene *scene, int x, int y, t_color c)
-{
-    int color;
-	
-	color = color_to_int(c);
-
-    if (x < 0 || x >= scene->gl.width || y < 0 || y >= scene->gl.height)
-        return;
-    scene->gl.img_data[y * scene->gl.width + x] = color;
-}
-
-
