@@ -6,15 +6,15 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 11:48:34 by alvaro            #+#    #+#             */
-/*   Updated: 2025/12/26 19:31:33 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/29 18:43:08 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
 
-# include "../minilibx-linux/mlx.h"
 # include "../libft/libft.h"
+# include "../minilibx-linux/mlx.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <math.h>
@@ -22,8 +22,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <string.h>
 # include <unistd.h>
-#include <string.h>
 
 # define PI 3.141592653589793
 # define WIDTH 800
@@ -32,45 +32,49 @@
 # define EPSILON 1e-6
 # define Z __LINE__
 # define F __FILE__
-#define OFFSET 1e-4
+# define OFFSET 1e-4
 
-#define NOINTERSECTION -1.0
-#define OPAQUE 255
+# define NOINTERSECTION -1.0
 
 # define ERROR -1
-typedef struct s_color
+// WIDTH y HEIGHT → tamaño de la ventana.
+// MAX_OBJ → máximo número de objetos en la escena.
+// EPSILON y OFFSET → para evitar problemas de precisión en intersecciones.
+// NOINTERSECTION → valor que indica que un rayo no chocó con ningún objeto.
+
+typedef struct s_color//RGB
 {
 	float		r;
 	float		g;
 	float		b;
 }				t_color;
 
-typedef struct s_point
+typedef struct s_point//posición de cámara, luz u objetos.
 {
 	float		x;
 	float		y;
 	float		z;
 }				t_point;
 
-typedef struct s_vector
+typedef struct s_vector//direcciones, normales, vectores de cámara
 {
 	float		x;
 	float		y;
 	float		z;
 }				t_vec;
 
-typedef enum e_type
+typedef enum e_type//identifica el tipo: plano, esfera, cilindro, cámara, luz, ambiente.
 {
-	ER = 0,
-	PL,
-	SP,
-	CY,
-	CM,
-	AM,
-	LG,
+	TYPE_ERROR = 0,
+	PLANE,
+	SPHERE,
+	CYLINDER,
+	CAMERA,
+	AMBIENT,
+	LIGHT,
 }				t_type;
 
-typedef struct s_obj
+typedef struct s_obj//representa un objeto en la escena, con posición, color, normal y dimensiones.
 {
 	t_type		type;
 	t_point		position;
@@ -80,7 +84,7 @@ typedef struct s_obj
 	double		height;
 }				t_obj;
 
-typedef struct s_camera
+typedef struct s_camera//posición, dirección y vectores para proyectar la imagen.
 {
 	bool		status;
 	t_point		position;
@@ -91,45 +95,45 @@ typedef struct s_camera
 	double		ratio;
 }				t_camera;
 
-typedef struct s_ambient
+typedef struct s_ambient//brillo global y color
 {
-	float   ratio;
+	float		ratio;
 	bool		status;
 	double		brightness;
 	t_color		color;
 }				t_ambient;
 
-typedef struct s_light
+typedef struct s_light//punto y brillo.
 {
 	bool		status;
 	t_point		position;
 	double		brightness;
 }				t_light;
 
-typedef struct s_ray
+typedef struct s_ray//rayo desde cámara
 {
 	t_point		origin;
 	t_vec		direction;
 }				t_ray;
 
-typedef struct s_intr
+typedef struct s_intr//información de intersección: punto de contacto, normal y objeto
 {
 	t_point		position;
 	t_vec		normal;
 	t_obj		*obj;
 }				t_intr;
 
-typedef struct s_gl
+typedef struct s_gl//manejo de MinilibX: ventana, imagen y datos de píxeles.
 {
-    void    *mlx_ptr;
-    void    *win_ptr;
-    void    *img_ptr;
-    int     *img_data;
-    int     width;
-    int     height;
-}               t_gl;
+	void		*mlx_ptr;
+	void		*win_ptr;
+	void		*img_ptr;
+	int			*img_data;
+	int			width;
+	int			height;
+}				t_gl;
 
-typedef struct s_scene
+typedef struct s_scene//agrupa todo: cámara, luz, ambient, objetos.
 {
 	t_gl		gl;
 	t_camera	camera;
@@ -155,7 +159,7 @@ typedef struct s_parse
 /* ===================== */
 
 void			ft_error(char *file, int lineno, char **msg);
-void			er_close(int fd);
+void			ft_error_close(int fd);
 
 /* ===================== */
 /* ===== PARSE ========= */
@@ -181,14 +185,15 @@ bool			assign_values(t_parse *parse);
 bool			read_file(t_scene *scene, int fd);
 t_parse			parse_object_type(char *token);
 
-bool	check_format(t_scene *scene, char **tokens,
-			t_type type, bool *error);
+bool			check_format(t_scene *scene, char **tokens, t_type type,
+					bool *error);
 
 /* ===================== */
 /* ===== MATH VEC ====== */
 /* ===================== */
 
 t_vec			vector_zero(void);
+bool			is_zero_vector(t_vec v);
 double			module(t_vec vector);
 t_vec			normalize(t_vec vector);
 double			scalar_p(t_vec a, t_vec b);
@@ -236,37 +241,36 @@ t_obj			create_cylinder(t_point position, t_vec axis, float values[2],
 					t_color color);
 
 /* ray */
-t_ray		get_ray(t_camera cam, int x, int y);
-void		init_shadow_ray(t_light light, t_ray *ray, t_intr intr);
+t_ray			get_ray(t_camera cam, int x, int y);
+void			init_shadow_ray(t_light light, t_ray *ray, t_intr intr);
 
 /* intersect */
-t_intr		get_intersection(t_scene *scene, t_ray ray);
+t_intr			get_intersection(t_scene *scene, t_ray ray);
 
 /* lighting */
-t_color		get_lighting(t_scene *scene, t_intr intr);
+t_color			get_lighting(t_scene *scene, t_intr intr);
 
 /* pixel */
-void put_pixel(t_scene *scene, int x, int y, t_color c);
-int			color_to_int(t_color c);
+void			put_pixel(t_scene *scene, int x, int y, t_color c);
+int				color_to_int(t_color c);
 
 /* raytrace */
-void		raytrace_scene(t_scene *scene);
+void			raytrace_scene(t_scene *scene);
 
-void	free_arg(char **arg);
-bool		check_zero_vector(t_vec v, bool *error);
+void			free_arg(char **arg);
+bool			check_zero_vector(t_vec v, bool *error);
 
-double	ft_atolf(char *str);
-int		ft_arr_len(char **arr);
-char	**read_next_line_tokens(int fd);
+double			ft_atolf(char *str);
+int				ft_arr_len(char **arr);
+char			**read_next_line_tokens(int fd);
 
 // parse
-bool	check_format(t_scene *s, char **toks, t_type type, bool *error);
-bool	is_rt(char *file);
+bool			check_format(t_scene *s, char **toks, t_type type, bool *error);
+bool			is_rt(char *file);
 
 // raytracing
-double	compute_sphere_intersection(t_ray ray, t_obj obj);
-double	compute_plane_intersection(t_ray ray, t_obj obj);
-double	compute_cylinder_intersection(t_ray ray, t_obj obj);
-
+double			compute_sphere_intersection(t_ray ray, t_obj obj);
+double			compute_plane_intersection(t_ray ray, t_obj obj);
+double			compute_cylinder_intersection(t_ray ray, t_obj obj);
 
 #endif

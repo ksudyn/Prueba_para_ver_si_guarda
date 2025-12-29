@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/19 20:10:56 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/26 19:03:11 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/29 16:01:31 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,14 @@ t_vec	parse_vector(char *str, bool *error, bool free_str)
 	components = ft_split(str, ',');
 	if (!components || ft_arr_len(components) != 3)
 		return (free_arg(components), *error = true, vector);
+
 	vector.x = parse_float(components[0], error, false);
 	vector.y = parse_float(components[1], error, false);
 	vector.z = parse_float(components[2], error, false);
-	if (vector.x == 0 && vector.y == 0 && vector.z == 0)
-        vector = vector_zero();
+
+	if (is_zero_vector(vector))
+		*error = true;
+
 	free_arg(components);
 	if (free_str)
 		free(str);

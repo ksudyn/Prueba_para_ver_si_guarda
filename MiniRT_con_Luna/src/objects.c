@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 17:31:42 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/23 20:11:33 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/29 20:04:13 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,22 @@ t_obj	create_plane(t_point position, t_vec normal, t_color color)
 {
 	t_obj	plane;
 
-	plane.type = PL;
+	plane.type = PLANE;
 	plane.position = position;
-	plane.normal = normalize(normal);
+	if (is_zero_vector(normal))
+		plane.normal = vector_zero();
+	else
+		plane.normal = normalize(normal);
 	plane.color = color;
 	return (plane);
 }
+
 
 t_obj	create_sphere(t_point position, float radius, t_color color)
 {
 	t_obj	sphere;
 
-	sphere.type = SP;
+	sphere.type = SPHERE;
 	sphere.position = position;
 	sphere.diameter = radius * 2.0f;
 	sphere.color = color;
@@ -59,11 +63,15 @@ t_obj	create_cylinder(t_point position, t_vec axis,
 {
 	t_obj	cylinder;
 
-	cylinder.type = CY;
+	cylinder.type = CYLINDER;
 	cylinder.position = position;
-	cylinder.normal = normalize(axis);
+	if (is_zero_vector(axis))
+		cylinder.normal = vector_zero();
+	else
+		cylinder.normal = normalize(axis);
 	cylinder.diameter = values[0] * 2.0f;
 	cylinder.height = values[1];
 	cylinder.color = color;
 	return (cylinder);
 }
+

@@ -8,3 +8,17 @@ sp 1,1,-4 2 255,0,0
 
 pl 3,2,-5    1,1,0  0,255,0
 pl -2,-2,-2  0,1,0  0,0,255
+
+# A → guarda luz ambiental 20% blanca.
+
+# C → cámara en (0,0,4) mirando hacia (0,0,-1) con FOV 70.
+
+# L → luz puntual en (1,1,1) con brillo 0.7.
+
+# cy → cilindro en (-1,1,-4) con eje (0,-1,0), diámetro 2, altura 2, color amarillo.
+
+# sp → esfera en (1,1,-4) con diámetro 2, color rojo.
+
+# pl → dos planos con colores verde y azul.
+
+# Cada línea se parsea y se valida, luego se guarda en t_scene para que el render pueda usarla

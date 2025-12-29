@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/19 20:11:50 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/26 19:31:02 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/29 18:33:57 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,26 @@ bool	assign_values_ambient(t_parse *parse)
 {
 	bool	error;
 
+	if (!parse || !parse->tokens)
+		return (true);
+	if (!parse->tokens[1] || !parse->tokens[2])
+		return (true);
+
 	error = false;
 	parse->val = parse_float(parse->tokens[1], &error, false);
+	if (error)
+		return (true);
 	if (parse->val > 1)
 		parse->val = 1;
+	if (parse->val < 0)
+		parse->val = 0;
+
 	parse->c = parse_color(parse->tokens[2], &error, false);
-	return (error);
+	if (error)
+		return (true);
+	return (false);
 }
+
 
 // Asigna valores de cámara
 bool	assign_values_camera(t_parse *parse)
@@ -51,7 +64,7 @@ bool	assign_values_light_or_sphere(t_parse *parse)
 	error = false;
 	parse->p = parse_point(parse->tokens[1], &error, false);
 	parse->val = parse_float(parse->tokens[2], &error, false);
-	if (parse->type == SP)
+	if (parse->type == SPHERE)
 		parse->c = parse_color(parse->tokens[3], &error, false);
 	else if (parse->val > 1)
 		parse->val = 1;
@@ -65,8 +78,12 @@ bool	assign_values_cylinder_or_plane(t_parse *parse)
 
 	error = false;
 	parse->p = parse_point(parse->tokens[1], &error, false);
-	parse->v = normalize(parse_vector(parse->tokens[2], &error, false));
-	if (parse->type == PL)
+	parse->v = parse_vector(parse->tokens[2], &error, false);
+	if (is_zero_vector(parse->v))
+		error = true;
+	else
+		parse->v = normalize(parse->v);
+	if (parse->type == PLANE)
 		parse->c = parse_color(parse->tokens[3], &error, false);
 	else
 	{
@@ -80,15 +97,15 @@ bool	assign_values_cylinder_or_plane(t_parse *parse)
 // Función genérica que llama a la correcta según tipo
 bool	assign_values(t_parse *parse)
 {
-	if (parse->type == ER)
+	if (parse->type == TYPE_ERROR)
 		return (false);
-	else if (parse->type == AM)
+	else if (parse->type == AMBIENT)
 		return (assign_values_ambient(parse));
-	else if (parse->type == CM)
+	else if (parse->type == CAMERA)
 		return (assign_values_camera(parse));
-	else if (parse->type == LG || parse->type == SP)
+	else if (parse->type == LIGHT || parse->type == SPHERE)
 		return (assign_values_light_or_sphere(parse));
-	else if (parse->type == CY || parse->type == PL)
+	else if (parse->type == CYLINDER || parse->type == PLANE)
 		return (assign_values_cylinder_or_plane(parse));
 	return (false);
 }

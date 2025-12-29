@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/23 14:32:26 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/26 18:39:36 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/29 16:25:28 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,14 @@ t_ray	get_ray(t_camera cam, int x, int y)
 
 void	init_shadow_ray(t_light light, t_ray *ray, t_intr intr)
 {
+	t_vec	dir;
+
 	ray->origin = intr.position;
-	ray->direction = normalize(sub_points(light.position, intr.position));
+	dir = sub_points(light.position, intr.position);
+	if (is_zero_vector(dir))
+		ray->direction = vector_zero();
+	else
+		ray->direction = normalize(dir);
 }
+
 

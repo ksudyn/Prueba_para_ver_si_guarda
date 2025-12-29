@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 15:48:49 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/26 15:36:08 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/29 16:23:25 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,10 @@ t_camera	create_camera(t_point position, t_vec forward, double fov, bool raw)
 
 	camera.status = true;
 	camera.position = position;
-	camera.forward = normalize(forward);
+	if (is_zero_vector(forward))
+		camera.forward = vector_zero();
+	else
+		camera.forward = normalize(forward);
 	camera.scale = fov;
 	if (raw)
 		camera.scale = tan(fov * PI / 360.0);

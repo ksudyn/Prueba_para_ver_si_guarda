@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 18:06:58 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/26 15:36:27 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/29 16:24:36 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,11 @@ t_vec	vectorial_p(t_vec a, t_vec b)
 	result.x = a.y * b.z - a.z * b.y;
 	result.y = a.z * b.x - a.x * b.z;
 	result.z = a.x * b.y - a.y * b.x;
+	if (is_zero_vector(result))
+		return (vector_zero());
 	return (normalize(result));
 }
+
 
 t_vec	add_vectors(t_vec a, t_vec b)
 {

@@ -13,7 +13,7 @@
 NAME        = miniRT
 
 CC          = cc
-CFLAGS      = -Wall -Wextra -Werror
+CFLAGS      = -Wall -Wextra -Werror -g
 
 # ===================== #
 # ===== DIRECTORIES ==== #

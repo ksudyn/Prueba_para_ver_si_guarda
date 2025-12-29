@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/23 14:32:57 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/26 18:39:52 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/29 20:05:32 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ t_intr	get_intersection(t_scene *scene, t_ray ray)
 	i = -1;
 	while (++i < scene->obj_num)
 	{
-		if (scene->obj[i].type == PL)
+		if (scene->obj[i].type == PLANE)
 			d = compute_plane_intersection(ray, scene->obj[i]);
-		else if (scene->obj[i].type == SP)
+		else if (scene->obj[i].type == SPHERE)
 			d = compute_sphere_intersection(ray, scene->obj[i]);
 		else
 			d = compute_cylinder_intersection(ray, scene->obj[i]);

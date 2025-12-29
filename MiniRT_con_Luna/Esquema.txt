@@ -1,0 +1,75 @@
++----------------------+
+| main(argc, argv)     |
++----------------------+
+           |
+           v
++----------------------+
+| Validar argumentos   |
+| (debe ser 1 .rt)    |
++----------------------+
+           |
+           v
++----------------------+
+| Inicializar escena   |
+| ft_memset(&scene,0)  |
++----------------------+
+           |
+           v
++----------------------+
+| Parsear archivo      |
+| ft_parse(filename)   |
++----------------------+
+           |
+           v
++----------------------+
+| Leer línea por línea |
+|   - Identificar tipo |
+|     A, C, L, sp, pl, cy
+|   - Separar tokens  |
+|   - Convertir datos |
+|   - Validar rangos  |
+|   - Crear objeto y  |
+|     guardarlo en t_scene
++----------------------+
+           |
+           v
++----------------------+
+| Inicializar MinilibX |
+| - mlx_init           |
+| - Crear ventana      |
+| - Crear imagen       |
+| - Obtener punteros   |
++----------------------+
+           |
+           v
++----------------------+
+| Raytracing escena    |
+| raytrace_scene()     |
++----------------------+
+           |
+           v
++----------------------+
+| Por cada píxel (x,y) |
+|   - Generar rayo     |
+|     desde cámara     |
+|   - Calcular         |
+|     intersecciones   |
+|     con todos los obj|
+|   - Determinar color |
+|     (ambient + difusa)|
+|   - Guardar en img_data
++----------------------+
+           |
+           v
++----------------------+
+| Mostrar imagen       |
+| mlx_put_image_to_win |
++----------------------+
+           |
+           v
++----------------------+
+| Loop MLX             |
+| mlx_loop()           |
+| - Espera eventos     |
+| - ESC / cruz cierra  |
++----------------------+
