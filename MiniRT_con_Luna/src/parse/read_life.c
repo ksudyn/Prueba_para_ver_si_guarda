@@ -6,12 +6,41 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 16:34:40 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/29 20:15:11 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/30 20:26:06 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/miniRT.h"
 
+/*
+ * check_dup(t_scene *scene, t_type type)
+ * --------------------------------------
+ * Verifica que los elementos que solo pueden existir una vez
+ * en la escena no estén duplicados.
+ *
+ * Parámetros:
+ * - scene: estructura principal de la escena
+ * - type: tipo de elemento que se está parseando
+ *
+ * Cómo funciona:
+ * - Si el tipo es CAMERA, comprueba que aún no haya cámara definida.
+ * - Si el tipo es AMBIENT, comprueba que aún no haya luz ambiental.
+ * - Si el tipo es LIGHT, comprueba que aún no haya luz puntual.
+ * - Para el resto de objetos (esferas, planos, cilindros),
+ *   siempre devuelve true, ya que pueden repetirse.
+ *
+ * Relación con el archivo .rt:
+ * - Evita configuraciones inválidas como:
+ *     C ...   ← primera cámara (válida)
+ *     C ...   ← segunda cámara (error)
+ *     A ...   ← solo una luz ambiental permitida
+ *
+ * Devuelve:
+ * - true  → el objeto se puede añadir
+ * - false → el objeto es un duplicado inválido
+ */
+
+ 
 static bool	check_dup(t_scene *scene, t_type type)
 {
 	if (type == CAMERA)
@@ -22,6 +51,35 @@ static bool	check_dup(t_scene *scene, t_type type)
 		return (!scene->light.status);
 	return (true);
 }
+
+/*
+ * check_type_syntax(t_type type, int count)
+ * -----------------------------------------
+ * Verifica que el número de tokens de una línea coincida
+ * con lo esperado según el tipo de objeto.
+ *
+ * Parámetros:
+ * - type: tipo de elemento (CAMERA, LIGHT, SPHERE, etc.)
+ * - count: número total de tokens en la línea
+ *
+ * Cómo funciona:
+ * - Compara la cantidad de parámetros esperados para cada tipo:
+ *     CAMERA   → 4 tokens  (C pos dir fov)
+ *     LIGHT    → 3 tokens  (L pos brightness)
+ *     AMBIENT  → 3 tokens  (A ratio color)
+ *     PLANE    → 4 tokens  (pl pos normal color)
+ *     SPHERE   → 4 tokens  (sp pos diameter color)
+ *     CYLINDER → 6 tokens  (cy pos axis diameter height color)
+ *
+ * Relación con el archivo .rt:
+ * - Detecta errores de formato como:
+ *     "sp 0,0,0 2"            → faltan parámetros
+ *     "C 0,0,0 0,0,1 70 42"   → parámetros de más
+ *
+ * Devuelve:
+ * - true  → formato correcto
+ * - false → número de parámetros incorrecto
+ */
 
 static bool	check_type_syntax(t_type type, int count)
 {
@@ -39,6 +97,42 @@ static bool	check_type_syntax(t_type type, int count)
 		return (count == 6);
 	return (false);
 }
+
+/*
+ * check_format(t_scene *scene, char **tokens, t_type type, bool *error)
+ * ---------------------------------------------------------------------
+ * Valida que una línea del archivo .rt tenga un formato correcto
+ * antes de parsear sus valores numéricos.
+ *
+ * Parámetros:
+ * - scene: escena actual (para detectar duplicados)
+ * - tokens: array de strings generado a partir de la línea
+ * - type: tipo de objeto detectado
+ * - error: puntero para marcar error global de parseo
+ *
+ * Cómo funciona:
+ * 1. Verifica que el array de tokens no sea NULL.
+ * 2. Comprueba que el objeto no esté duplicado si es único
+ *    (cámara, luz, ambiente).
+ * 3. Cuenta el número de tokens en la línea.
+ * 4. Verifica que el número de tokens sea válido según el tipo.
+ * 5. Si alguna comprobación falla:
+ *    - Muestra un mensaje de error.
+ *    - Marca *error = true.
+ *    - Devuelve false.
+ * 6. Si todo es correcto, devuelve true.
+ *
+ * Relación con el archivo .rt:
+ * - Filtra líneas inválidas antes de convertir strings a números:
+ *     "pl 0,0,0 0,1,0 255,0,0"  → OK
+ *     "pl 0,0,0 0,1,0"          → Error
+ *     "C 0,0,0 0,0,1 70"        → OK
+ *     "C 1,1,1 0,0,1 60"        → Error (duplicada)
+ *
+ * Importante:
+ * - Esta función NO parsea valores.
+ * - Solo valida estructura y coherencia básica.
+ */
 
 bool	check_format(t_scene *scene, char **tokens,
 		t_type type, bool *error)
