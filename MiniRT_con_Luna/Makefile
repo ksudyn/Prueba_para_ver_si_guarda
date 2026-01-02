@@ -45,12 +45,12 @@ SRC_FILES   = \
     main.c \
     ft_error.c \
     utils.c \
-    objects.c \
     \
+    maths/create_camera.c \
+    maths/create_objects.c \
     maths/vectors.c \
     maths/vectors_utils.c \
     maths/object_utils.c \
-    maths/camera_utils.c \
     maths/light_utils.c\
     \
     parse/ft_parse.c \

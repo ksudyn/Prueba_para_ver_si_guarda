@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/23 14:33:34 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/29 20:05:42 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/01/02 17:52:54 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ static t_color	get_ambient(t_scene *scene, t_intr intr)
 	return ((t_color){
 		scene->ambient.brightness * scene->ambient.color.r * intr.obj->color.r,
 		scene->ambient.brightness * scene->ambient.color.g * intr.obj->color.g,
-		scene->ambient.brightness * scene->ambient.color.b * intr.obj->color.b});
+		scene->ambient.brightness * scene->ambient.color.b
+		* intr.obj->color.b});
 }
 
 t_color	get_lighting(t_scene *scene, t_intr intr)

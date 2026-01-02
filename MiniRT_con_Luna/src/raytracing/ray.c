@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/23 14:32:26 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/29 16:25:28 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/01/02 17:54:20 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,3 @@ void	init_shadow_ray(t_light light, t_ray *ray, t_intr intr)
 	else
 		ray->direction = normalize(dir);
 }
-
-

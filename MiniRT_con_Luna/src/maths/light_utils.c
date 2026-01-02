@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 15:49:07 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/29 20:04:28 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/01/02 17:53:44 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static t_vec	get_sphere_normal(t_intr intr, t_ray ray)
 	return (flip_vector(normal));
 }
 
-
 static t_vec	get_cylinder_normal(t_intr intr, t_ray ray)
 {
 	t_vec	from_center;
@@ -50,7 +49,6 @@ static t_vec	get_cylinder_normal(t_intr intr, t_ray ray)
 		return (from_center);
 	return (flip_vector(from_center));
 }
-
 
 t_vec	get_normal(t_intr intr, t_ray ray)
 {

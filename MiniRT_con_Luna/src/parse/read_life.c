@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 16:34:40 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/30 20:26:06 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/01/02 18:36:27 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@
  * - false → el objeto es un duplicado inválido
  */
 
- 
 static bool	check_dup(t_scene *scene, t_type type)
 {
 	if (type == CAMERA)
@@ -163,7 +162,44 @@ bool	check_format(t_scene *scene, char **tokens,
 	return (true);
 }
 
-// Lee el archivo y parsea la escena
+/*
+ * read_file(t_scene *scene, int fd)
+ * ---------------------------------
+ * Lee el archivo de escena línea por línea y convierte cada línea en un objeto
+ * de la escena (cámara, luz, plano, esfera, cilindro).
+ *
+ * Cómo funciona paso a paso:
+ * 1. Inicializa `has_error = false`.
+ * 2. Llama a `read_next_line_tokens(fd)` para leer la primera línea y separarla en palabras.
+ *    - Ejemplo: línea "sp 0,0,20 20 255,0,0"
+ *      → tokens = ["sp", "0,0,20", "20", "255,0,0"]
+ * 3. Mientras haya tokens y no haya errores:
+ *    a) Comprueba que la primera palabra exista (tokens[0]).
+ *    b) Determina el tipo de objeto con `parse_object_type(tokens[0])`.
+ *       - Esto convierte "sp" → SPHERE, "C" → CAMERA, etc.
+ *    c) Guarda los tokens en `parse_data.tokens` para que las funciones de asignación
+ *       puedan acceder a ellos.
+ *    d) Llama a `check_format(scene, tokens, parse_data.type, &has_error)`:
+ *       - Verifica que no haya duplicados (solo puede haber 1 cámara, 1 luz ambiental, 1 luz puntual)
+ *       - Verifica que la cantidad de parámetros sea correcta para ese tipo de objeto.
+ *    e) Si todo está bien, llama a `assign_values(&parse_data)`:
+ *       - Convierte los tokens en números, vectores y colores.
+ *    f) Si no hay error, llama a `create_scene_object(scene, parse_data)`:
+ *       - Crea el objeto en memoria y lo agrega a la escena.
+ * 4. Libera la memoria de los tokens de esa línea.
+ * 5. Lee la siguiente línea y repite el proceso.
+ * 6. Al final, devuelve `true` si todo salió bien, o `false` si hubo algún error.
+ *
+ * Relación con el archivo .rt:
+ * - Cada línea del archivo pasa por este proceso.
+ * - Resultado: cada línea válida termina como un objeto dentro de `t_scene`.
+ * - La escena queda completamente cargada y lista para raytracing.
+ *
+ * Nota:
+ * - Esta función es la “orquesta” que llama a todas las funciones pequeñas de parseo.
+ * - Coordina leer, separar, identificar, verificar, convertir y crear objetos.
+ */
+
 bool	read_file(t_scene *scene, int fd)
 {
 	bool	has_error;
@@ -177,6 +213,7 @@ bool	read_file(t_scene *scene, int fd)
 		if (tokens[0])
 		{
 			parse_data = parse_object_type(tokens[0]);
+			parse_data.tokens = tokens;//esto se añadio para corregir un error.
 			if (check_format(scene, tokens, parse_data.type, &has_error))
 			{
 				has_error = assign_values(&parse_data);

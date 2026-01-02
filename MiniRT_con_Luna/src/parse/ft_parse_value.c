@@ -6,13 +6,30 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/19 20:10:56 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/29 16:01:31 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/01/02 18:34:13 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/miniRT.h"
 
-// Convierte string a float
+/*
+ * parse_float(char *str, bool *error, bool free_str)
+ * --------------------------------------------------
+ * Convierte un texto en un número decimal (float).
+ *
+ * Ejemplo:
+ *   "0.2" → 0.2f
+ *
+ * Cómo funciona:
+ * 1. Recorre el string y verifica que solo haya dígitos, puntos o signos (+/-).
+ * 2. Si hay algo raro, marca error y devuelve 0.0.
+ * 3. Convierte el texto a float usando ft_atolf.
+ * 4. Si free_str=true, libera la memoria del string.
+ *
+ * Uso en el parseo:
+ * - Se usa para convertir ratios, diámetros, alturas, FOV, etc.
+ */
+
 float	parse_float(char *str, bool *error, bool free_str)
 {
 	int		i;
@@ -37,7 +54,24 @@ float	parse_float(char *str, bool *error, bool free_str)
 	return (result);
 }
 
-// Convierte string a int
+/*
+ * parse_int(char *str, bool *error, bool free_str)
+ * -----------------------------------------------
+ * Convierte un texto en un número entero (int).
+ *
+ * Ejemplo:
+ *   "255" → 255
+ *
+ * Cómo funciona:
+ * 1. Recorre el string y verifica que solo haya dígitos.
+ * 2. Si hay algo raro, marca error y devuelve 0.
+ * 3. Convierte el texto a int usando ft_atoi.
+ * 4. Si free_str=true, libera la memoria del string.
+ *
+ * Uso en el parseo:
+ * - Se usa para colores antes de pasarlos a t_color.
+ */
+
 int	parse_int(char *str, bool *error, bool free_str)
 {
 	int	i;
@@ -62,7 +96,24 @@ int	parse_int(char *str, bool *error, bool free_str)
 	return (value);
 }
 
-// Convierte string a punto
+/*
+ * parse_point(char *str, bool *error, bool free_str)
+ * --------------------------------------------------
+ * Convierte un texto con formato "x,y,z" en un punto 3D (t_point).
+ *
+ * Ejemplo:
+ *   "0,0,4" → t_point {x=0, y=0, z=4}
+ *
+ * Cómo funciona:
+ * 1. Divide el string por comas usando ft_split.
+ * 2. Verifica que haya exactamente 3 partes.
+ * 3. Convierte cada parte a float usando parse_float.
+ * 4. Libera memoria de componentes y del string si free_str=true.
+ *
+ * Uso en el parseo:
+ * - Se usa para la posición de cámara, luces y objetos.
+ */
+
 t_point	parse_point(char *str, bool *error, bool free_str)
 {
 	char	**components;
@@ -81,7 +132,25 @@ t_point	parse_point(char *str, bool *error, bool free_str)
 	return (point);
 }
 
-// Convierte string a vector
+/*
+ * parse_vector(char *str, bool *error, bool free_str)
+ * --------------------------------------------------
+ * Convierte un texto "x,y,z" en un vector 3D (t_vec).
+ *
+ * Ejemplo:
+ *   "0,0,-1" → t_vec {x=0, y=0, z=-1}
+ *
+ * Cómo funciona:
+ * 1. Divide el string por comas.
+ * 2. Verifica que haya exactamente 3 partes.
+ * 3. Convierte cada parte a float.
+ * 4. Si el vector es {0,0,0}, marca error.
+ * 5. Libera memoria de componentes y del string si free_str=true.
+ *
+ * Uso en el parseo:
+ * - Se usa para la dirección de cámara, normal de planos, eje de cilindros.
+ */
+
 t_vec	parse_vector(char *str, bool *error, bool free_str)
 {
 	t_vec	vector;
@@ -91,21 +160,36 @@ t_vec	parse_vector(char *str, bool *error, bool free_str)
 	components = ft_split(str, ',');
 	if (!components || ft_arr_len(components) != 3)
 		return (free_arg(components), *error = true, vector);
-
 	vector.x = parse_float(components[0], error, false);
 	vector.y = parse_float(components[1], error, false);
 	vector.z = parse_float(components[2], error, false);
-
 	if (is_zero_vector(vector))
 		*error = true;
-
 	free_arg(components);
 	if (free_str)
 		free(str);
 	return (vector);
 }
 
-// Convierte string a color
+/*
+ * parse_color(char *str, bool *error, bool free_str)
+ * --------------------------------------------------
+ * Convierte un texto "R,G,B" en un color (t_color) con valores entre 0 y 1.
+ *
+ * Ejemplo:
+ *   "255,0,0" → t_color {r=1.0, g=0.0, b=0.0}
+ *
+ * Cómo funciona:
+ * 1. Divide el string por comas.
+ * 2. Verifica que haya exactamente 3 partes.
+ * 3. Convierte cada parte a int usando parse_int.
+ * 4. Divide entre 255 para que quede entre 0 y 1.
+ * 5. Libera memoria de componentes y del string si free_str=true.
+ *
+ * Uso en el parseo:
+ * - Se usa para color de luces y objetos.
+ */
+
 t_color	parse_color(char *str, bool *error, bool free_str)
 {
 	t_color	color;

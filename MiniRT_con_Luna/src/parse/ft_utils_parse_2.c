@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/19 20:11:58 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/30 16:15:21 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/01/02 18:18:05 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,19 @@ bool	is_rt(char *file)
 	i = 0;
 	while (file[i + 3])
 		i++;
-	ret = (file[i] == '.' && file[i + 1] == 'r' && file[i + 2] == 't' );
+	ret = (file[i] == '.' && file[i + 1] == 'r' && file[i + 2] == 't');
 	return (ret);
 }
 
 /*
  * get_type_from_token(char *token)
  * --------------------------------
+
  * Determina el tipo de elemento de la escena a partir del primer token de una línea.
  *
  * Parámetro:
- * - token: primer elemento de la línea del archivo .rt (identificador del objeto)
+ *
+	- token: primer elemento de la línea del archivo .rt (identificador del objeto)
  *
  * Cómo funciona:
  * 1. Si el token es NULL o vacío, devuelve TYPE_ERROR.
@@ -60,9 +62,9 @@ bool	is_rt(char *file)
  * Esta función NO parsea valores numéricos, solo identifica el tipo de objeto.
  */
 
-
 static t_type	get_type_from_token(char *token)
 {
+	//printf("DEBUG get_type_from_token: token='%s'\n", token);
 	if (!token || !token[0])
 		return (TYPE_ERROR);
 	if (token[1] == '\0')
@@ -120,7 +122,48 @@ t_parse	parse_object_type(char *token)
 	return (parse_data);
 }
 
-// Crea el objeto en la escena
+/*
+ * add_camera(t_scene *scene, t_parse parse_data)
+ * ---------------------------------------------
+ * Añade la cámara parseada a la escena.
+ *
+ * Cómo funciona:
+ * - Llama a create_camera() con los datos parseados.
+ * - Marca camera.status = true
+ *
+ * Relación con el flujo:
+ * - Llamado desde create_scene_object() cuando parse_data.type == CAMERA
+ */
+
+static void	add_camera(t_scene *scene, t_parse parse_data)
+{
+	scene->camera = create_camera(parse_data.point, parse_data.vec,
+			parse_data.val, true);
+	scene->camera.status = true;
+}
+
+/*
+ * create_scene_object(t_scene *scene, t_parse parse_data)
+ * -------------------------------------------------------
+ * Función central que inserta un objeto o luz/cámara en la escena.
+ *
+ * Cómo funciona:
+ * 1. Si el número de objetos >= MAX_OBJ, retorna sin hacer nada.
+ * 2. Según parse_data.type:
+ *    - CAMERA  → add_camera()
+ *    - LIGHT   → create_light() → scene->light
+ *    - AMBIENT → create_ambient() → scene->ambient
+ *    - PLANE   → create_plane() → scene->obj[]
+ *    - SPHERE  → create_sphere() → scene->obj[]
+ *    - CYLINDER→ create_cylinder() → scene->obj[]
+ * 3. Para cilindro usa un array temporal cylinder_data[2] = {diameter, height}
+ * 4. Incrementa scene->obj_num solo para objetos que se almacenan en obj[]
+ *
+ * Relación con .rt:
+ * - Cada línea del archivo, tras parsear y asignar valores, termina aquí
+ *   para convertirse en parte de la escena que se dibujará.
+ */
+
 void	create_scene_object(t_scene *scene, t_parse parse_data)
 {
 	float	cylinder_data[2];
@@ -128,23 +171,22 @@ void	create_scene_object(t_scene *scene, t_parse parse_data)
 	if (scene->obj_num >= MAX_OBJ)
 		return ;
 	if (parse_data.type == CAMERA)
-		scene->camera = create_camera(parse_data.p, parse_data.v,
-				parse_data.val, true);
+		add_camera(scene, parse_data);
 	else if (parse_data.type == LIGHT)
-		scene->light = create_light(parse_data.val, parse_data.p, true);
+		scene->light = create_light(parse_data.val, parse_data.point, true);
 	else if (parse_data.type == AMBIENT)
-		scene->ambient = create_ambient(parse_data.c, parse_data.val, true);
+		scene->ambient = create_ambient(parse_data.color, parse_data.val, true);
 	else if (parse_data.type == PLANE)
-		scene->obj[scene->obj_num++] = create_plane(parse_data.p, parse_data.v,
-				parse_data.c);
+		scene->obj[scene->obj_num++] = create_plane(parse_data.point,
+				parse_data.vec, parse_data.color);
 	else if (parse_data.type == SPHERE)
-		scene->obj[scene->obj_num++] = create_sphere(parse_data.p,
-				parse_data.val, parse_data.c);
+		scene->obj[scene->obj_num++] = create_sphere(parse_data.point,
+				parse_data.val, parse_data.color);
 	else if (parse_data.type == CYLINDER)
 	{
 		cylinder_data[0] = parse_data.val;
 		cylinder_data[1] = parse_data.height;
-		scene->obj[scene->obj_num++] = create_cylinder(parse_data.p,
-				parse_data.v, cylinder_data, parse_data.c);
+		scene->obj[scene->obj_num++] = create_cylinder(parse_data.point,
+				parse_data.vec, cylinder_data, parse_data.color);
 	}
 }

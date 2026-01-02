@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 11:48:34 by alvaro            #+#    #+#             */
-/*   Updated: 2025/12/29 18:43:08 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/01/02 16:00:54 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,11 +147,11 @@ typedef struct s_parse
 {
 	char		**tokens;
 	t_type		type;
-	t_point		p;
-	t_vec		v;
+	t_point		point;
+	t_vec		vec;
 	float		val;
 	float		height;
-	t_color		c;
+	t_color		color;
 }				t_parse;
 
 /* ===================== */

@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 19:50:02 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/26 20:48:36 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/01/02 17:49:38 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int					ft_tolower(int c);
 char				*ft_strchr(const char *s, int c);
 char				*ft_strrchr(const char *s, int c);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
-int	ft_strcmp(const char *s1, const char *s2);
+int					ft_strcmp(const char *s1, const char *s2);
 void				*ft_memchr(const void *s, int c, size_t len);
 int					ft_memcmp(const void *s1, const void *s2, size_t len);
 char				*ft_strnstr(const char *str, const char *to_find,
@@ -65,8 +65,8 @@ void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char *s, int fd);
 void				ft_putendl_fd(char *s, int fd);
 void				ft_putnbr_fd(int nb, int fd);
-int	ft_isspace(char c);
-int	ft_issign(char c);
+int					ft_isspace(char c);
+int					ft_issign(char c);
 
 /* BONUS */
 typedef struct s_list

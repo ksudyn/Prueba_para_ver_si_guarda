@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 18:06:58 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/29 16:24:36 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/01/02 17:53:50 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ t_vec	vectorial_p(t_vec a, t_vec b)
 		return (vector_zero());
 	return (normalize(result));
 }
-
 
 t_vec	add_vectors(t_vec a, t_vec b)
 {
