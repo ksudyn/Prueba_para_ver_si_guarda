@@ -6,13 +6,29 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/19 20:07:16 by ksudyn            #+#    #+#             */
-/*   Updated: 2026/01/02 17:55:06 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/01/30 16:51:29 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/miniRT.h"
 
-// Función principal de parseo
+/*
+ * ft_parse(char *filename, t_scene *scene)
+ * ----------------------------------------
+ * Función principal del parseo.
+ * Es la entrada desde main().
+ *
+ * Qué hace:
+ * 1. Comprueba que el archivo tenga extensión .rt.
+ * 2. Abre el archivo en modo lectura.
+ * 3. Llama a read_file para leer y procesar todo el contenido.
+ * 4. Verifica que exista al menos una cámara en la escena.
+ * 5. Cierra el archivo y devuelve el resultado.
+ *
+ * Si algo falla:
+ * - Muestra un mensaje de error.
+ * - Devuelve false.
+ */
 bool	ft_parse(char *filename, t_scene *scene)
 {
 	int		fd;
