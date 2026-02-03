@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/19 20:11:16 by ksudyn            #+#    #+#             */
-/*   Updated: 2026/01/02 17:18:00 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/02/03 17:08:01 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ static int	count_words(const char *line)
 	}
 	return (count);
 }
-
 
 /*
  * get_next_word(const char *line, int *cursor)
@@ -130,7 +129,6 @@ static void	free_tokens(char **tokens, int count)
 		free(tokens[count]);
 	free(tokens);
 }
-
 
 /*
  * split_line_by_space(char *line)

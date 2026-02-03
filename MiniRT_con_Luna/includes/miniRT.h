@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 11:48:34 by alvaro            #+#    #+#             */
-/*   Updated: 2026/01/02 16:00:54 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/02/03 19:45:01 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,7 +258,6 @@ int				color_to_int(t_color c);
 void			raytrace_scene(t_scene *scene);
 
 void			free_arg(char **arg);
-bool			check_zero_vector(t_vec v, bool *error);
 
 double			ft_atolf(char *str);
 int				ft_arr_len(char **arr);

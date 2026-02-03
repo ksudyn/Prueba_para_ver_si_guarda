@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/19 20:11:50 by ksudyn            #+#    #+#             */
-/*   Updated: 2026/01/02 16:28:16 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/02/03 17:08:36 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ bool	assign_values_ambient(t_parse *parse)
 		return (true);
 	if (!parse->tokens[1] || !parse->tokens[2])
 		return (true);
-
 	error = false;
 	parse->val = parse_float(parse->tokens[1], &error, false);
 	if (error)
@@ -55,7 +54,6 @@ bool	assign_values_ambient(t_parse *parse)
 		parse->val = 1;
 	if (parse->val < 0)
 		parse->val = 0;
-
 	parse->color = parse_color(parse->tokens[2], &error, false);
 	if (error)
 		return (true);

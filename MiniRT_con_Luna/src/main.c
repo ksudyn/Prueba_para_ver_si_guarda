@@ -6,11 +6,34 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 20:06:41 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/26 20:52:56 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/02/03 17:30:42 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
+
+int	close_window(t_scene *scene)
+{
+    if (!scene)
+        return (0);
+
+    mlx_destroy_image(scene->gl.mlx_ptr, scene->gl.img_ptr);
+    mlx_destroy_window(scene->gl.mlx_ptr, scene->gl.win_ptr);
+    mlx_destroy_display(scene->gl.mlx_ptr);
+    free(scene->gl.mlx_ptr);
+
+    exit(0);
+    return (0);
+}
+
+
+int	key_press(int keycode, t_scene *scene)
+{
+	if (keycode == 65307) // ESC
+		close_window(scene);
+	return (0);
+}
+
 
 int main(int argc, char **argv)
 {
@@ -70,6 +93,10 @@ int main(int argc, char **argv)
     mlx_put_image_to_window(scene.gl.mlx_ptr, scene.gl.win_ptr,
                             scene.gl.img_ptr, 0, 0);
 
+    // 🔑 Hooks IMPORTANTES
+	mlx_key_hook(scene.gl.win_ptr, key_press, &scene);          // ESC
+	mlx_hook(scene.gl.win_ptr, 17, 0, close_window, &scene);    // ❌                        
+    
     // Loop principal de MLX
     mlx_loop(scene.gl.mlx_ptr);
 
