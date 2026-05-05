@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 18:06:58 by ksudyn            #+#    #+#             */
-/*   Updated: 2026/02/03 17:03:08 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/05/05 16:12:12 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_vec	vectorial_p(t_vec a, t_vec b)
 	if (is_zero_vector(result))
 		return (vector_zero());
 	return (normalize(result));
-}//“Dame un vector que apunte a un lado, a partir de dos direcciones”
+}
 
 /*
  * add_vectors()

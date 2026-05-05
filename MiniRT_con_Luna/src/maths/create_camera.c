@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 15:48:49 by ksudyn            #+#    #+#             */
-/*   Updated: 2026/01/02 18:17:39 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/05/05 16:11:55 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,13 @@
  *
  * Cómo funciona:
  * - Usa up = (0,1,0) por defecto.
- * - Si forward está casi paralelo a up, cambia up = (0,0,1) para evitar colinealidad.
+ * - Si forward está casi paralelo a up,
+ * 		cambia up = (0,0,1) para evitar colinealidad.
  * - Devuelve producto vectorial: right = forward × up.
  *
  * Relación con el raytracer:
- * - right y up se usan para generar rayos de cada píxel correctamente orientados.
+ * - right y up se usan para generar rayos de cada píxel
+ * 		correctamente orientados.
  */
 
 static t_vec	get_camera_right(t_vec forward)

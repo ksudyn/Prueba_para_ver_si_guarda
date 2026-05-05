@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/19 20:11:16 by ksudyn            #+#    #+#             */
-/*   Updated: 2026/02/03 17:08:01 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/05/05 16:15:09 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,12 @@
  * - line: cadena de caracteres (una línea del archivo .rt)
  *
  * Cómo funciona:
- * 1. Inicializa contador de palabras a 0 y marca que no estamos dentro de una palabra.
+ * 1. Inicializa contador de palabras a 0
+ * 		y marca que no estamos dentro de una palabra.
  * 2. Recorre cada carácter:
  *    - Si es espacio, inside_word = false.
- *    - Si no es espacio y no estábamos dentro de una palabra, incrementa count y marca inside_word = true.
+ *    - Si no es espacio y no estábamos dentro de una palabra,
+ * 			incrementa count y marca inside_word = true.
  * 3. Devuelve el número de palabras encontradas.
  *
  * Relación con .rt:
@@ -59,11 +61,13 @@ static int	count_words(const char *line)
 /*
  * get_next_word(const char *line, int *cursor)
  * ---------------------------------------------
- * Devuelve la siguiente palabra de la línea, empezando desde la posición *cursor.
+ * Devuelve la siguiente palabra de la línea,
+ * 		empezando desde la posición *cursor.
  *
  * Parámetros:
  * - line: línea de texto
- * - cursor: índice actual dentro de la línea (se actualiza tras extraer la palabra)
+ * - cursor: índice actual dentro de la línea
+ * 		(se actualiza tras extraer la palabra)
  *
  * Cómo funciona:
  * 1. Avanza cursor hasta el primer carácter no espacio.
@@ -133,14 +137,16 @@ static void	free_tokens(char **tokens, int count)
 /*
  * split_line_by_space(char *line)
  * --------------------------------
- * Divide una línea en tokens separados por espacios y devuelve un array de strings.
+ * Divide una línea en tokens separados por espacios
+ * 		y devuelve un array de strings.
  *
  * Parámetros:
  * - line: línea de texto (se libera al final)
  *
  * Cómo funciona:
  * 1. Cuenta cuántas palabras tiene la línea con count_words().
- * 2. Reserva memoria para un array de punteros a char, tamaño words_count + 1.
+ * 2. Reserva memoria para un array de punteros a char,
+ 			tamaño words_count + 1.
  * 3. Recorre la línea y extrae cada palabra usando get_next_word().
  * 4. Si falla get_next_word(), libera todo con free_tokens() y retorna NULL.
  * 5. Coloca NULL al final del array y libera la línea original.
@@ -148,7 +154,8 @@ static void	free_tokens(char **tokens, int count)
  * Relación con .rt:
  * - Convierte:
  *   "cy -1,1,-4 0,-1,0 2 2 255,255,0"
- *   en un array de tokens: ["cy", "-1,1,-4", "0,-1,0", "2", "2", "255,255,0"]
+ *   en un array de tokens:
+ * 			["cy", "-1,1,-4", "0,-1,0", "2", "2", "255,255,0"]
  *
  */
 
@@ -182,7 +189,8 @@ char	**split_line_by_space(char *line)
 /*
  * read_next_line_tokens(int fd)
  * ------------------------------
- * Lee la siguiente línea del archivo y devuelve un array de tokens separados por espacios.
+ * Lee la siguiente línea del archivo
+ * 		y devuelve un array de tokens separados por espacios.
  *
  * Parámetros:
  * - fd: descriptor de archivo abierto
@@ -198,7 +206,8 @@ char	**split_line_by_space(char *line)
  *   A 0.2 255,255,255
  *   C 0,0,4 0,0,-1 70
  *   ...
- * - Cada línea se convierte en array de strings para ser procesado por read_file().
+ * - Cada línea se convierte en array de strings,
+ * 		para ser procesado por read_file().
  *
  */
 

@@ -6,11 +6,11 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/19 20:11:58 by ksudyn            #+#    #+#             */
-/*   Updated: 2026/01/02 18:18:05 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/05/05 15:35:37 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/miniRT.h"
+#include "../../includes/miniRT.h"
 
 bool	is_rt(char *file)
 {
@@ -32,11 +32,12 @@ bool	is_rt(char *file)
  * get_type_from_token(char *token)
  * --------------------------------
 
- * Determina el tipo de elemento de la escena a partir del primer token de una línea.
- *
+ * Determina el tipo de elemento de la escena
+ * a partir del primer token de una línea.
  * Parámetro:
  *
-	- token: primer elemento de la línea del archivo .rt (identificador del objeto)
+	- token: primer elemento de la línea del archivo .rt
+		(identificador del objeto)
  *
  * Cómo funciona:
  * 1. Si el token es NULL o vacío, devuelve TYPE_ERROR.

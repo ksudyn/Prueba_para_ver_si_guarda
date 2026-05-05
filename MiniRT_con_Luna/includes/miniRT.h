@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 11:48:34 by alvaro            #+#    #+#             */
-/*   Updated: 2026/02/03 19:45:01 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/05/05 17:47:40 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ typedef struct s_vector//direcciones, normales, vectores de cámara
 	float		z;
 }				t_vec;
 
-typedef enum e_type//identifica el tipo: plano, esfera, cilindro, cámara, luz, ambiente.
+//identifica el tipo: plano, esfera, cilindro, cámara, luz, ambiente.
+typedef enum e_type
 {
 	TYPE_ERROR = 0,
 	PLANE,
@@ -74,7 +75,8 @@ typedef enum e_type//identifica el tipo: plano, esfera, cilindro, cámara, luz, 
 	LIGHT,
 }				t_type;
 
-typedef struct s_obj//representa un objeto en la escena, con posición, color, normal y dimensiones.
+//representa un objeto en la escena, con posición, color, normal y dimensiones.
+typedef struct s_obj
 {
 	t_type		type;
 	t_point		position;
@@ -84,7 +86,8 @@ typedef struct s_obj//representa un objeto en la escena, con posición, color, n
 	double		height;
 }				t_obj;
 
-typedef struct s_camera//posición, dirección y vectores para proyectar la imagen.
+//posición, dirección y vectores para proyectar la imagen.
+typedef struct s_camera
 {
 	bool		status;
 	t_point		position;
@@ -116,7 +119,8 @@ typedef struct s_ray//rayo desde cámara
 	t_vec		direction;
 }				t_ray;
 
-typedef struct s_intr//información de intersección: punto de contacto, normal y objeto
+//información de intersección: punto de contacto, normal y objeto
+typedef struct s_intr
 {
 	t_point		position;
 	t_vec		normal;
@@ -142,6 +146,25 @@ typedef struct s_scene//agrupa todo: cámara, luz, ambient, objetos.
 	int			obj_num;
 	t_obj		obj[MAX_OBJ];
 }				t_scene;
+
+typedef struct s_quad//para la funcion solve_quadratic para reducir argumentos
+{
+	double	a;
+	double	b;
+	double	c;
+	t_ray	ray;
+	t_obj	obj;
+}	t_quad;
+//para la funcion compute_cylinder_intersection por las variables en la funcion
+typedef struct s_cyl
+{
+	t_vec	oc;
+	t_vec	d;
+	t_vec	x;
+	double	a;
+	double	b;
+	double	c;
+}	t_cyl;
 
 typedef struct s_parse
 {

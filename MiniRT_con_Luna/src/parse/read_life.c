@@ -6,11 +6,11 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 16:34:40 by ksudyn            #+#    #+#             */
-/*   Updated: 2026/02/03 19:43:31 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/05/05 17:01:47 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/miniRT.h"
+#include "../../includes/miniRT.h"
 
 /*
  * check_dup(t_scene *scene, t_type type)
@@ -200,30 +200,36 @@ bool	check_format(t_scene *scene, char **tokens,
  * - Coordina leer, separar, identificar, verificar, convertir y crear objetos.
  */
 
+static bool	process_line(t_scene *scene, char **tokens, bool *has_error)
+{
+	t_parse	parse_data;
+
+	if (!tokens[0])
+		return (false);
+	parse_data = parse_object_type(tokens[0]);
+	parse_data.tokens = tokens;
+	if (check_format(scene, tokens, parse_data.type, has_error))
+	{
+		*has_error = assign_values(&parse_data);
+		if (!(*has_error))
+			create_scene_object(scene, parse_data);
+	}
+	return (*has_error);
+}
+
 bool	read_file(t_scene *scene, int fd)
 {
 	bool	has_error;
-	t_parse	parse_data;
 	char	**tokens;
 
 	has_error = false;
 	tokens = read_next_line_tokens(fd);
 	while (tokens && !has_error)
 	{
-		if (tokens[0])
-		{
-			parse_data = parse_object_type(tokens[0]);
-			parse_data.tokens = tokens;//esto se añadio para corregir un error.
-			if (check_format(scene, tokens, parse_data.type, &has_error))
-			{
-				has_error = assign_values(&parse_data);
-				if (!has_error)
-					create_scene_object(scene, parse_data);
-			}
-		}
-		free_arg(tokens); // siempre libero tokens
-        if (has_error)
-            break;       // corto el loop si hubo error
+		process_line(scene, tokens, &has_error);
+		free_arg(tokens);
+		if (has_error)
+			break ;
 		tokens = read_next_line_tokens(fd);
 	}
 	if (tokens)

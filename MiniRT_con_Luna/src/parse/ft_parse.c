@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/19 20:07:16 by ksudyn            #+#    #+#             */
-/*   Updated: 2026/02/03 19:43:18 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/05/05 16:13:10 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ bool	ft_parse(char *filename, t_scene *scene)
 	}
 	status = read_file(scene, fd);
 	if (!scene->camera.status)
-	{// Verifica que haya al menos una cámara en el archivo
+	{
 		ft_error(F, Z, (char *[]){"Camera missing in config.\n", NULL});
 		status = false;
 	}

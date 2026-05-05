@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 15:49:07 by ksudyn            #+#    #+#             */
-/*   Updated: 2026/02/03 17:05:30 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/05/05 15:49:25 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,5 +123,7 @@ t_vec	get_normal(t_intr intr, t_ray ray)
 	return (vector_zero());
 }
 
-// “Primero calculo dónde el rayo toca el objeto y después calculo la normal para saber qué cara del objeto
-// está mirando a la cámara, lo que es necesario para aplicar la iluminación correctamente.”
+// “Primero calculo dónde el rayo toca el objeto
+// y después calculo la normal
+// para saber qué cara del objeto está mirando a la cámara,
+// lo que es necesario para aplicar la iluminación correctamente.”
