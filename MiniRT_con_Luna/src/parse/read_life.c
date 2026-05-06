@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 16:34:40 by ksudyn            #+#    #+#             */
-/*   Updated: 2026/05/06 19:07:27 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/05/06 20:21:19 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,6 @@ static bool	process_line(t_scene *scene, char **tokens, bool *has_error)
 // 		free_arg(tokens);
 // 	return (!has_error);
 // }
-
 
 /*
  * read_file(t_scene *scene, int fd)
