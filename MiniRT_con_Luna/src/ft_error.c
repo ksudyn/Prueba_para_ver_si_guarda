@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/19 19:45:47 by ksudyn            #+#    #+#             */
-/*   Updated: 2026/01/02 17:50:41 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/05/06 18:48:06 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	ft_error(char *file, int lineno, char **msg)
 		msg++;
 	}
 	write(STDERR_FILENO, "\n", 1);
-	exit(EXIT_FAILURE);
+	//exit(EXIT_FAILURE); QUITAR
 }
 
 void	ft_error_close(int fd)

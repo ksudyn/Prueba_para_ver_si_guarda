@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 16:34:40 by ksudyn            #+#    #+#             */
-/*   Updated: 2026/05/05 17:01:47 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/05/06 19:07:27 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,8 +133,7 @@ static bool	check_type_syntax(t_type type, int count)
  * - Solo valida estructura y coherencia básica.
  */
 
-bool	check_format(t_scene *scene, char **tokens,
-		t_type type, bool *error)
+bool	check_format(t_scene *scene, char **tokens, t_type type, bool *error)
 {
 	int	i;
 
@@ -162,44 +161,6 @@ bool	check_format(t_scene *scene, char **tokens,
 	return (true);
 }
 
-/*
- * read_file(t_scene *scene, int fd)
- * ---------------------------------
- * Lee el archivo de escena línea por línea y convierte cada línea en un objeto
- * de la escena (cámara, luz, plano, esfera, cilindro).
- *
- * Cómo funciona paso a paso:
- * 1. Inicializa `has_error = false`.
- * 2. Llama a `read_next_line_tokens(fd)` para leer la primera línea y separarla en palabras.
- *    - Ejemplo: línea "sp 0,0,20 20 255,0,0"
- *      → tokens = ["sp", "0,0,20", "20", "255,0,0"]
- * 3. Mientras haya tokens y no haya errores:
- *    a) Comprueba que la primera palabra exista (tokens[0]).
- *    b) Determina el tipo de objeto con `parse_object_type(tokens[0])`.
- *       - Esto convierte "sp" → SPHERE, "C" → CAMERA, etc.
- *    c) Guarda los tokens en `parse_data.tokens` para que las funciones de asignación
- *       puedan acceder a ellos.
- *    d) Llama a `check_format(scene, tokens, parse_data.type, &has_error)`:
- *       - Verifica que no haya duplicados (solo puede haber 1 cámara, 1 luz ambiental, 1 luz puntual)
- *       - Verifica que la cantidad de parámetros sea correcta para ese tipo de objeto.
- *    e) Si todo está bien, llama a `assign_values(&parse_data)`:
- *       - Convierte los tokens en números, vectores y colores.
- *    f) Si no hay error, llama a `create_scene_object(scene, parse_data)`:
- *       - Crea el objeto en memoria y lo agrega a la escena.
- * 4. Libera la memoria de los tokens de esa línea.
- * 5. Lee la siguiente línea y repite el proceso.
- * 6. Al final, devuelve `true` si todo salió bien, o `false` si hubo algún error.
- *
- * Relación con el archivo .rt:
- * - Cada línea del archivo pasa por este proceso.
- * - Resultado: cada línea válida termina como un objeto dentro de `t_scene`.
- * - La escena queda completamente cargada y lista para raytracing.
- *
- * Nota:
- * - Esta función es la “orquesta” que llama a todas las funciones pequeñas de parseo.
- * - Coordina leer, separar, identificar, verificar, convertir y crear objetos.
- */
-
 static bool	process_line(t_scene *scene, char **tokens, bool *has_error)
 {
 	t_parse	parse_data;
@@ -217,23 +178,85 @@ static bool	process_line(t_scene *scene, char **tokens, bool *has_error)
 	return (*has_error);
 }
 
+// bool	read_file(t_scene *scene, int fd)
+// {
+// 	bool	has_error;
+// 	char	**tokens;
+
+// 	has_error = false;
+// 	tokens = read_next_line_tokens(fd);
+// 	while (tokens && !has_error)
+// 	{
+// 		process_line(scene, tokens, &has_error);
+// 		free_arg(tokens);
+// 		if (has_error)
+// 			break ;
+// 		tokens = read_next_line_tokens(fd);
+// 	}
+// 	if (tokens)
+// 		free_arg(tokens);
+// 	return (!has_error);
+// }
+
+
+/*
+ * read_file(t_scene *scene, int fd)
+ * ---------------------------------
+ * Orquesta la lectura completa del archivo .rt, asegurando que cada línea se 
+ * procese correctamente y que no queden fugas de memoria, incluso ante errores.
+ *
+ * Cómo funciona paso a paso:
+ * 1. Inicializa `has_error = false` y entra en un bucle infinito de lectura.
+ * * 2. Obtiene tokens: Llama a `read_next_line_tokens(fd)`.
+ * - Si no hay más líneas (tokens == NULL), rompe el bucle.
+ * * 3. Procesa la línea: Si no se ha detectado ningún error previo, llama a 
+ * `process_line(scene, tokens, &has_error)`.
+ * - Identifica el tipo de objeto (A, C, L, sp, pl, cy).
+ * - Valida duplicados y sintaxis (check_format).
+ * - Convierte texto a datos numéricos (assign_values) y crea el objeto.
+ * * 4. Liberación inmediata: Se llama a `free_arg(tokens)` tras procesar cada línea.
+ * - Esto garantiza que cada asignación de memoria se libere en la misma iteración.
+ * * 5. Gestión de errores y Valgrind:
+ * - Si `has_error` es true, entra en un bucle secundario de "vaciado".
+ * - Lee y libera todas las líneas restantes del archivo para evitar que el 
+ * puntero estático de `get_next_line` deje bytes "alcanzables" (still reachable).
+ * * 6. Limpieza final: Llama a `get_next_line(-1)` para liberar manualmente la 
+ * variable estática interna de GNL antes de salir.
+ * * 7. Retorno: Devuelve `true` si el archivo se leyó íntegramente sin fallos, 
+ * o `false` si ocurrió algún error de formato o duplicados.
+ *
+ * Importancia de esta estructura:
+ * - Centraliza la liberación de memoria en un solo lugar (read_file).
+ * - Cumple con la norma al evitar asignaciones en la estructura de control del while.
+ * - Asegura un reporte de Valgrind limpio (0 leaks, 0 errores) en cualquier escenario.
+ */
+
 bool	read_file(t_scene *scene, int fd)
 {
 	bool	has_error;
 	char	**tokens;
 
 	has_error = false;
-	tokens = read_next_line_tokens(fd);
-	while (tokens && !has_error)
+	while (1)
 	{
-		process_line(scene, tokens, &has_error);
+		tokens = read_next_line_tokens(fd);
+		if (!tokens)
+			break ;
+		if (!has_error)
+			process_line(scene, tokens, &has_error);
 		free_arg(tokens);
 		if (has_error)
+		{
+			tokens = read_next_line_tokens(fd);
+			while (tokens)
+			{
+				free_arg(tokens);
+				tokens = read_next_line_tokens(fd);
+			}
 			break ;
-		tokens = read_next_line_tokens(fd);
+		}
 	}
-	if (tokens)
-		free_arg(tokens);
+	get_next_line(-1);
 	return (!has_error);
 }
 
@@ -245,14 +268,17 @@ Línea del .rt                 Función                        Estructura llenad
 A 0.2 255,255,255             		parse_object_type → AMBIENT         scene.ambient
 C 0,0,4 0,0,-1 70             		parse_object_type → CAMERA         	scene.camera
 L 1,1,1 0.7                    		parse_object_type → LIGH         	scene.light
-cy -1,1,-4 0,-1,0 2 2 255,255,0  	parse_object_type → CYLINDER       	scene.obj[]
+cy
+			-1,1,-4 0,-1,0 2 2 255,255,0  	parse_object_type → CYLINDER       	scene.obj[]
 sp 1,1,-4 2 255,0,0           		parse_object_type → SPHERE         	scene.obj[]
 pl 3,2,-5 1,1,0 0,255,0       		parse_object_type → PLANE         	scene.obj[]
-pl -2,-2,-2 0,1,0 0,0,255     		parse_object_type → PLANE         	scene.obj[]
+pl
+				-2,-2,-2 0,1,0 0,0,255     		parse_object_type → PLANE         	scene.obj[]
 
 Explicación:
 - Cada línea se identifica por su primer token (A, C, L, sp, pl, cy).
 - parse_object_type() determina el tipo de objeto/luz/cámara.
-- Luego, los valores (posición, color, tamaño, normal, etc.) se convierten en números y se guardan
+- Luego, los valores (posición, color, tamaño, normal,
+	etc.) se convierten en números y se guardan
   en la estructura correspondiente dentro de t_scene.
 */
