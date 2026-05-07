@@ -6,12 +6,21 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/23 14:33:34 by ksudyn            #+#    #+#             */
-/*   Updated: 2026/01/02 17:52:54 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/05/07 19:03:58 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
+/*
+ * is_shadowed()
+ * -------------
+ * Determina si un punto está en sombra.
+ * * Cómo funciona:
+ * - Lanza un rayo desde el objeto hacia la bombilla.
+ * - Si encuentra cualquier otro objeto en el camino antes de llegar a la luz,
+ * significa que el punto está bloqueado y debe estar en sombra.
+ */
 static bool	is_shadowed(t_scene *scene, t_ray ray, double max_dist)
 {
 	int		i;
@@ -32,6 +41,16 @@ static bool	is_shadowed(t_scene *scene, t_ray ray, double max_dist)
 	return (false);
 }
 
+/*
+ * get_diffuse()
+ * -------------
+ * Calcula la luz directa (difusa) que recibe un punto.
+ * * Cómo funciona:
+ * - Primero verifica si el punto está en sombra usando is_shadowed.
+ * - Si hay luz, usa el producto escalar entre la normal
+ * 		y la dirección de la luz.
+ * - Cuanto más de frente dé la luz, más brilla el color del objeto.
+ */
 static t_color	get_diffuse(t_scene *scene, t_intr intr)
 {
 	t_ray	ray;
@@ -52,6 +71,17 @@ static t_color	get_diffuse(t_scene *scene, t_intr intr)
 		scene->light.brightness * intensity * intr.obj->color.b});
 }
 
+/*
+ * get_ambient()
+ * -------------
+ * Calcula la luz base que recibe un objeto
+ * 		aunque no le dé el sol directamente.
+ * * Cómo funciona:
+ * - Multiplica la intensidad ambiental por el color de la luz
+ * 		y el color del objeto.
+ * - Es lo que permite que las partes no iluminadas
+ * 		no se vean totalmente negras.
+ */
 static t_color	get_ambient(t_scene *scene, t_intr intr)
 {
 	if (!scene->ambient.status)
@@ -63,6 +93,15 @@ static t_color	get_ambient(t_scene *scene, t_intr intr)
 		* intr.obj->color.b});
 }
 
+/*
+ * get_lighting()
+ * --------------
+ * Suma todas las luces (Ambiental + Difusa) para obtener el color final.
+ * * Por qué es necesario:
+ * - La luz ambiental evita que las sombras sean negro absoluto.
+ * - La luz difusa da volumen y realismo.
+ * - Se asegura de que el color no supere el máximo (blanco) usando fmin.
+ */
 t_color	get_lighting(t_scene *scene, t_intr intr)
 {
 	t_color	a;

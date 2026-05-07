@@ -6,12 +6,20 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/23 14:34:05 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/26 18:39:25 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/05/07 18:53:00 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
+/*
+ * raytrace_scene()
+ * ----------------
+ * El motor principal del programa. Recorre la pantalla píxel a píxel.
+ * * Cómo funciona:
+ * - Lanza un rayo por cada píxel (doble bucle X e Y).
+ * - Busca qué objeto toca, calcula su iluminación y lo dibuja en la imagen.
+ */
 void	raytrace_scene(t_scene *scene)
 {
 	int		x;

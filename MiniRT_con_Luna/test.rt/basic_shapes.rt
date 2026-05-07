@@ -1,0 +1,24 @@
+A   0.2   255,255,255
+C   0,2,-10   0,0,1   70
+L   -5,10,-5   0.6
+
+sp  0,0,0      5       255,0,0
+pl  0,-5,0     0,1,0   255,255,255
+cy  5,0,0      0,1,0   2 10 0,0,255
+
+# Crea una escena donde se vean los tres objetos fundamentales claramente.
+
+# Esfera: En el centro {0, 0, 0}.
+
+# Plano: Un suelo infinito (normal {0, 1, 0}).
+
+# Cilindro: Un poste vertical.
+
+
+# El evaluador te pedirá mover objetos. Para la esfera detrás de otra, necesitas alinear sus centros en el eje Z.
+
+# Esfera 1: sp 0,0,0 4 255,0,0
+
+# Esfera 2: sp 0,0,10 4 0,255,0 (Está 10 unidades detrás).
+
+# Para el cilindro rotado 90°, cambia su vector de dirección de vertical {0, 1, 0} a horizontal {1, 0, 0}

@@ -1,0 +1,12 @@
+A   0.1   255,255,255
+C   0,5,-15   0,-0.2,1   70
+L   0,20,0    0.8
+
+sp  0,5,0     4       255,0,0
+pl  0,0,0     0,1,0   255,255,255
+
+# Este es el punto donde más gente falla. Necesitas que un objeto proyecte sombra sobre otro.
+
+# Configuración: Pon una luz alta, una esfera debajo y un plano en el suelo.
+
+# Qué observar: Debes ver un círculo negro (o más oscuro) en el plano justo debajo de la esfera.

@@ -65,7 +65,6 @@ SRC_FILES   = \
     raytracing/intersect_sphere.c \
     raytracing/ray.c \
     raytracing/intersect.c \
-    raytracing/normals.c \
     raytracing/lighting.c \
     raytracing/raytrace.c  \
     raytracing/pixel.c

@@ -6,12 +6,21 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 16:51:47 by ksudyn            #+#    #+#             */
-/*   Updated: 2026/01/02 17:53:17 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/05/07 19:01:19 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
+/*
+ * calculate_discriminant()
+ * ------------------------
+ * Realiza el cálculo matemático central para la intersección con esferas.
+ * * Cómo funciona:
+ * - Calcula el término 'b' y el término 'c' de la ecuación cuadrática.
+ * - Devuelve el determinante ($b^2 - 4ac$).
+ * - Si el resultado es positivo, significa que el rayo atraviesa la esfera.
+ */
 static double	calculate_discriminant(double *b, t_ray ray, t_obj obj)
 {
 	t_vec	oc;
@@ -23,6 +32,15 @@ static double	calculate_discriminant(double *b, t_ray ray, t_obj obj)
 	return ((*b * *b) - (4.0 * c));
 }
 
+/*
+ * compute_sphere_intersection()
+ * -----------------------------
+ * Detecta si el rayo atraviesa una esfera.
+ * * Cómo funciona:
+ * - Usa la fórmula matemática de intersección rayo-esfera.
+ * - Si el discriminante es positivo, el rayo entra y sale de la esfera.
+ * - Devuelve la distancia "t" más pequeña (el primer punto que toca).
+ */
 double	compute_sphere_intersection(t_ray ray, t_obj obj)
 {
 	double	disc;

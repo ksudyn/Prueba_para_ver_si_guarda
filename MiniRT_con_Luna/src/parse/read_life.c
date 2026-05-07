@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 16:34:40 by ksudyn            #+#    #+#             */
-/*   Updated: 2026/05/06 20:21:19 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/05/07 18:34:37 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,26 +177,6 @@ static bool	process_line(t_scene *scene, char **tokens, bool *has_error)
 	}
 	return (*has_error);
 }
-
-// bool	read_file(t_scene *scene, int fd)
-// {
-// 	bool	has_error;
-// 	char	**tokens;
-
-// 	has_error = false;
-// 	tokens = read_next_line_tokens(fd);
-// 	while (tokens && !has_error)
-// 	{
-// 		process_line(scene, tokens, &has_error);
-// 		free_arg(tokens);
-// 		if (has_error)
-// 			break ;
-// 		tokens = read_next_line_tokens(fd);
-// 	}
-// 	if (tokens)
-// 		free_arg(tokens);
-// 	return (!has_error);
-// }
 
 /*
  * read_file(t_scene *scene, int fd)

@@ -6,12 +6,24 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 16:55:03 by ksudyn            #+#    #+#             */
-/*   Updated: 2026/05/05 17:24:12 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/05/07 19:06:31 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
+/*
+ * check_height()
+ * --------------
+ * Comprueba si el punto de choque está dentro de los límites del cilindro.
+ * * Cómo funciona:
+ * - Calcula el punto exacto en el espacio donde el rayo toca
+ * 		el cilindro infinito.
+ * - Mide la distancia desde el centro del cilindro
+ * 		hasta ese punto a lo largo de su eje.
+ * - Si esa distancia es mayor que la mitad de la altura,
+ * 		el choque no es válido.
+ */
 static double	check_height(double t, t_ray ray, t_obj obj)
 {
 	t_point	p;
@@ -26,6 +38,16 @@ static double	check_height(double t, t_ray ray, t_obj obj)
 	return (NOINTERSECTION);
 }
 
+/*
+ * solve_quadratic()
+ * -----------------
+ * Resuelve la ecuación de segundo grado para encontrar el punto de choque.
+ * * Cómo funciona:
+ * - Calcula el discriminante. Si es negativo, el rayo no toca el objeto.
+ * - Calcula las dos posibles distancias (t0 y t1).
+ * - Usa check_height
+ * 		para asegurar que el choque cae dentro del cuerpo del cilindro.
+ */
 static double	solve_quadratic(t_quad q)
 {
 	double	disc;
@@ -45,6 +67,15 @@ static double	solve_quadratic(t_quad q)
 	return (check_height(t1, q.ray, q.obj));
 }
 
+/*
+ * compute_cylinder_intersection()
+ * -------------------------------
+ * Lógica principal para detectar si un rayo choca con un cilindro.
+ * * Cómo funciona:
+ * - Reduce el problema 3D a una ecuación cuadrática (a, b, c).
+ * - Proyecta el rayo sobre el plano perpendicular al eje del cilindro.
+ * - Si hay solución, devuelve la distancia más cercana.
+ */
 double	compute_cylinder_intersection(t_ray ray, t_obj obj)
 {
 	t_cyl	c;
