@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 16:34:40 by ksudyn            #+#    #+#             */
-/*   Updated: 2026/05/07 18:34:37 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/05/08 15:24:10 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,12 +193,15 @@ static bool	process_line(t_scene *scene, char **tokens, bool *has_error)
  * - Identifica el tipo de objeto (A, C, L, sp, pl, cy).
  * - Valida duplicados y sintaxis (check_format).
  * - Convierte texto a datos numéricos (assign_values) y crea el objeto.
- * * 4. Liberación inmediata: Se llama a `free_arg(tokens)` tras procesar cada línea.
- * - Esto garantiza que cada asignación de memoria se libere en la misma iteración.
+ * * 4. Liberación inmediata: Se llama a `free_arg(tokens)`
+ * 			tras procesar cada línea.
+ * - Esto garantiza que cada asignación de memoria
+ * 			se libere en la misma iteración.
  * * 5. Gestión de errores y Valgrind:
  * - Si `has_error` es true, entra en un bucle secundario de "vaciado".
  * - Lee y libera todas las líneas restantes del archivo para evitar que el 
- * puntero estático de `get_next_line` deje bytes "alcanzables" (still reachable).
+ * 			puntero estático de `get_next_line`
+ * 			deje bytes "alcanzables" (still reachable).
  * * 6. Limpieza final: Llama a `get_next_line(-1)` para liberar manualmente la 
  * variable estática interna de GNL antes de salir.
  * * 7. Retorno: Devuelve `true` si el archivo se leyó íntegramente sin fallos, 
@@ -206,8 +209,10 @@ static bool	process_line(t_scene *scene, char **tokens, bool *has_error)
  *
  * Importancia de esta estructura:
  * - Centraliza la liberación de memoria en un solo lugar (read_file).
- * - Cumple con la norma al evitar asignaciones en la estructura de control del while.
- * - Asegura un reporte de Valgrind limpio (0 leaks, 0 errores) en cualquier escenario.
+ * - Cumple con la norma
+ * 			al evitar asignaciones en la estructura de control del while.
+ * - Asegura un reporte de Valgrind limpio
+ * 			(0 leaks, 0 errores) en cualquier escenario.
  */
 
 bool	read_file(t_scene *scene, int fd)
@@ -244,15 +249,13 @@ Ejemplo de cómo cada línea del archivo .rt se convierte en estructuras interna
 
 Línea del .rt                 Función                        Estructura llenada
 --------------------------------------------------------------------------------
-A 0.2 255,255,255             		parse_object_type → AMBIENT         scene.ambient
-C 0,0,4 0,0,-1 70             		parse_object_type → CAMERA         	scene.camera
-L 1,1,1 0.7                    		parse_object_type → LIGH         	scene.light
-cy
-			-1,1,-4 0,-1,0 2 2 255,255,0  	parse_object_type → CYLINDER       	scene.obj[]
-sp 1,1,-4 2 255,0,0           		parse_object_type → SPHERE         	scene.obj[]
-pl 3,2,-5 1,1,0 0,255,0       		parse_object_type → PLANE         	scene.obj[]
-pl
-				-2,-2,-2 0,1,0 0,0,255     		parse_object_type → PLANE         	scene.obj[]
+A 0.2 255,255,255             		parse_object_type → AMBIENT     scene.ambient
+C 0,0,4 0,0,-1 70             		parse_object_type → CAMERA      scene.camera
+L 1,1,1 0.7                    		parse_object_type → LIGH        scene.light
+cy -1,1,-4 0,-1,0 2 2 255,255,0  	parse_object_type → CYLINDER    scene.obj[]
+sp 1,1,-4 2 255,0,0           		parse_object_type → SPHERE      scene.obj[]
+pl 3,2,-5 1,1,0 0,255,0       		parse_object_type → PLANE       scene.obj[]
+pl -2,-2,-2 0,1,0 0,0,255     		parse_object_type → PLANE       scene.obj[]
 
 Explicación:
 - Cada línea se identifica por su primer token (A, C, L, sp, pl, cy).

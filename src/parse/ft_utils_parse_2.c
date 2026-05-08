@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/19 20:11:58 by ksudyn            #+#    #+#             */
-/*   Updated: 2026/05/05 15:35:37 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/05/08 15:26:06 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ bool	is_rt(char *file)
 
 static t_type	get_type_from_token(char *token)
 {
-	//printf("DEBUG get_type_from_token: token='%s'\n", token);
 	if (!token || !token[0])
 		return (TYPE_ERROR);
 	if (token[1] == '\0')

@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 20:06:41 by ksudyn            #+#    #+#             */
-/*   Updated: 2026/05/06 18:15:11 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/05/08 15:24:53 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,4 @@ int	main(int argc, char **argv)
 	return (0);
 }
 
-// valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./miniRT test.rt/nostalgic.rt
+// valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./m

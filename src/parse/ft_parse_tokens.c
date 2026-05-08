@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/19 20:11:16 by ksudyn            #+#    #+#             */
-/*   Updated: 2026/05/06 18:15:01 by ksudyn           ###   ########.fr       */
+/*   Updated: 2026/05/08 15:26:15 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,8 +219,6 @@ char	**read_next_line_tokens(int fd)
 	line = get_next_line(fd);
 	if (!line)
 		return (NULL);
-	//printf("DEBUG: got line: \"%s\"\n", line);
 	tokens = split_line_by_space(line);
-	//printf("DEBUG: tokens ptr=%p\n", (void *)tokens);
 	return (tokens);
 }
